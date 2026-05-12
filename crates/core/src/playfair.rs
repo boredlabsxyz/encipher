@@ -101,4 +101,36 @@ impl Playfair {
 
         digraphs
     }
+
+    fn encrypt_pair(&self, a: char, b: char) -> (char, char) {
+        let (r1, c1) = self.find_position(a);
+        let (r2, c2) = self.find_position(b);
+
+        if r1 == r2 {
+            // Same row: shift right
+            (self.grid[r1][(c1 + 1) % 5], self.grid[r2][(c2 + 1) % 5])
+        } else if c1 == c2 {
+            // Same column: shift down
+            (self.grid[(r1 + 1) % 5][c1], self.grid[(r2 + 1) % 5][c2])
+        } else {
+            // Rectangle: swap columns
+            (self.grid[r1][c2], self.grid[r2][c1])
+        }
+    }
+
+    fn decrypt_pair(&self, a: char, b: char) -> (char, char) {
+        let (r1, c1) = self.find_position(a);
+        let (r2, c2) = self.find_position(b);
+
+        if r1 == r2 {
+            // Same row: shift left (add 4 instead of subtracting 1 to avoid underflow)
+            (self.grid[r1][(c1 + 4) % 5], self.grid[r2][(c2 + 4) % 5])
+        } else if c1 == c2 {
+            // Same column: shift up
+            (self.grid[(r1 + 4) % 5][c1], self.grid[(r2 + 4) % 5][c2])
+        } else {
+            // Rectangle: swap columns (same as encrypt)
+            (self.grid[r1][c2], self.grid[r2][c1])
+        }
+    }
 }
