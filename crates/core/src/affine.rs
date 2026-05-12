@@ -3,6 +3,10 @@ use crate::error::CipherError;
 use crate::utils::alphabet::{ALPHABET_SIZE, char_to_index, index_to_char};
 use crate::utils::modular::{mod_inverse, mod_pos};
 
+/*
+The Affine cipher is a linear substitution cipher using the formula E(x) = (ax + b) mod m, where a and b are the multiplication and addition keys. This implementation in Rust validates that the multiplication key has a modular multiplicative inverse (required for decryption), storing it for efficient decryption operations
+*/
+
 #[derive(Debug)]
 pub struct Affine {
     pub mul_key: u32,
@@ -72,6 +76,8 @@ impl Cipher for Affine {
             .collect()
     }
 }
+
+/// Test implementation for Affine Cipher
 
 #[cfg(test)]
 mod tests {
